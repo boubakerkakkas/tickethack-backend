@@ -10,3 +10,5 @@ const Booking = require('../models/bookings');
 // GET /bookings/:id : récupérer une réservation par son identifiant
 // POST /bookings : créer une nouvelle réservation
 // DELETE /bookings/:id : supprimer une réservation par son identifiant
+
+module.exports = router;

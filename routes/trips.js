@@ -25,4 +25,4 @@ router.get('/trips', async (req, res) => {
 // PUT /trips/:id : mettre à jour un trajet existant par son identifiant
 // DELETE /trips/:id : supprimer un trajet par son identifiant
 
-module.exports = mongoose.model('trips', trajetSchema);
+module.exports = router
