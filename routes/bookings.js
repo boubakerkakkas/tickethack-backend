@@ -4,7 +4,7 @@ var router = express.Router();
 const Booking = require('../models/bookings');
 
 
-// RESERVATIONS
+// BOOKINGS
 
 // GET /bookings : récupérer toutes les réservations
 // GET /bookings/:id : récupérer une réservation par son identifiant

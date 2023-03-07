@@ -2,27 +2,35 @@ var express = require('express');
 var router = express.Router();
 
 const Trip = require('../models/trips');
-
-
-// TRAJETS
-
-// GET /trips : récupérer tous les trajets
-
-router.get('/trips', async (req, res) => {
-    const { departure, arrival, date } = req.query;
-    const trips = await Trip.findAll({
-      where: {
-        departure,
-        arrival,
-        date: moment(date).format('YYYY-MM-DD')
-      }
-    });
-    res.json(trips);
-  });
   
-// GET /trips/:id : récupérer un trajet par son identifiant
-// POST /trips : créer un nouveau trajet
-// PUT /trips/:id : mettre à jour un trajet existant par son identifiant
-// DELETE /trips/:id : supprimer un trajet par son identifiant
+
+// Recherche de trajets en fonction du départ, de l'arrivée et de la date
+router.get('/', (req, res) => {
+  const { departure, arrival, date } = req.query;
+  const searchParams = {};
+
+  if (departure) {
+    searchParams.departure = departure;
+  }
+  if (arrival) {
+    searchParams.arrival = arrival;
+  }
+  if (date) {
+    const localDate = new Date(date);
+    const utcDate = new Date(localDate.getTime() - localDate.getTimezoneOffset() * 60000);
+    // convertit la date locale en UTC
+    searchParams.date = { $gte: utcDate, $lt: new Date(utcDate.getTime() + 24 * 60 * 60 * 1000) };
+    // recherche les voyages pour toute la journée spécifiée dans le fuseau horaire local
+  }
+
+  Trip.find(searchParams)
+    .then(trips => {
+      res.json({ trips });
+    })
+    .catch(err => {
+      res.json({ error: err.message });
+    });
+});
+
 
 module.exports = router
