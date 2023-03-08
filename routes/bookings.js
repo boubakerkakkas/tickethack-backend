@@ -2,13 +2,21 @@ var express = require('express');
 var router = express.Router();
 
 const Booking = require('../models/bookings');
+const Cart = require('../models/carts');
 
 
-// BOOKINGS
+// Obtention du trajet sélectionné pour la réservation
+router.get('/', (req, res) => {
+  const { ObjectId } = req.query;
+  Booking.findOne({ ObjectId })
+    .then(booking => {
+      res.json({ booking });
+    })
+    .catch(err => {
+      res.json({ error: err.message });
+    });
+});
 
-// GET /bookings : récupérer toutes les réservations
-// GET /bookings/:id : récupérer une réservation par son identifiant
-// POST /bookings : créer une nouvelle réservation
-// DELETE /bookings/:id : supprimer une réservation par son identifiant
+
 
 module.exports = router;

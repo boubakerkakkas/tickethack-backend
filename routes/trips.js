@@ -2,7 +2,9 @@ var express = require('express');
 var router = express.Router();
 
 const Trip = require('../models/trips');
-  
+const Cart = require('../models/carts');
+const Booking = require('../models/bookings');
+
 
 // Recherche de trajets en fonction du départ, de l'arrivée et de la date
 router.get('/', (req, res) => {
@@ -10,10 +12,12 @@ router.get('/', (req, res) => {
   const searchParams = {};
 
   if (departure) {
-    searchParams.departure = departure;
+    const regex = new RegExp(departure, 'i');
+    searchParams.departure = regex;
   }
   if (arrival) {
-    searchParams.arrival = arrival;
+    const regex = new RegExp(arrival, 'i');
+    searchParams.arrival = regex;
   }
   if (date) {
     const localDate = new Date(date);
